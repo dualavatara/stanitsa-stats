@@ -1,0 +1,120 @@
+﻿UID - уникальный идентификатор события в системе
+TYPEID - идентификатор типа события
+APPID - идентификатор клиентского приложения (объект клиентского приложения включает в себя другие данные - платформу, ос, локаль, и т.п)
+TS - unix timestamp события
+SESSIONID - идентификатор сессии пользователя
+DATA - дополнительные данные события, массив ключ-значение
+
+
+Базовые события:
+
+-	Регистрация пользователя (явная или неявная),
+{"typeId":"REGISTRATION", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"platformId":"1416563655"}, "ts":"1416563655"}
+
+-	Авторизация пользователя,
+{"typeId":"LOGIN", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"platformId":"1416563655","browser":"Opera", "OS":"Windows", "resolution":"1920x1080", "gender":"male","age":19}, "ts":"1416563655"}
+
+
+Игровые события:
+
+-	Этап туториала завершен (id этапа),
+{"typeId":"TUTORIAL", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"tutorialId":1}, "ts":"1416563655"}
+
+-	Начало прохождения локации (id локации, уровень игрока, уровень локации, режим локации, есть ли помощь от другого игрока да/нет),
+{"typeId":"LEVEL_START", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"levelId":"53fd8d59387b67d0398b4571", "mode":"WORDS", "isFriendHelp":true, "currentExpLevel":3}, "ts":"1416563655"}
+
+-	Завершение прохождения локации (ссылка на начало прохождения; результат: успешно, не успешно; длительность; использовались ли подсказки – да/нет; совершены ли покупки – да/нет),
+{"typeId":"LEVEL_END", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"levelId":"53fd8d59387b67d0398b4571", "isWin":true, "time":123, "useHint":true, "makePurchase":false, "currentExpLevel":3}, "ts":"1416563655"}
+
+-	Открытие локации
+{"typeId":"LEVEL_OPEN", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"levelId":"53fd8d59387b67d0398b4571"}, "ts":"1416563655"}
+
+-	Получен квест (id квеста),
+{"typeId":"GET_QUEST", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"questId":"53fd8d59387b67d0398b4571"}, "ts":"1416563655"}
+
+-	Выполненный квест (id квеста),
+{"typeId":"END_QUEST", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"questId":"53fd8d59387b67d0398b4571"}, "ts":"1416563655"}
+
+-	Найден предмет (id предмета);
+{"typeId":"FIND_ITEM", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"itemId":"53fd8d59387b67d0398b4571"}, "ts":"1416563655"}
+
+-	Получено опыта (количество, за что получен – значение из справочника),
+{"typeId":"GET_EXP", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"count":50}, "ts":"1416563655"}
+
+-	Получено денег (количество, за что получены – значение из справочника),
+{"typeId":"GET_CURRENCY_PREMIUM ", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"count":20}, "ts":"1416563655"}
+
+-	Получено премиальной валюты (количество, за что получено – значение из справочника),
+{"typeId":"GET_CURRENCY_SOFT", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"count":50}, "ts":"1416563655"}
+
+-	Получение уровня (полученный уровень),
+{"typeId":"GET_LEVEL", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"expLevel":10}, "ts":"1416563655"}
+
+-	Игровая покупка в магазине (id товара, стоимость),
+{"typeId":"MAKE_PURCAHSE_SOFT", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"itemId":"53fd8d59387b67d0398b4571", "currencySoft":0, "currencyPremium":10, "currentCurrencySoft":20, "currentCurrencyPremium":10}, "ts":"1416563655"}
+
+-	Покупка энергии из меню энергии (через кнопку + около шкалы энергии) (id товара, стоимость, текущее количество энергии),
+{"typeId":"PURCHASE_ENERGY_FROM_BUTTON_PLUS", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"itemId":"53fd8d59387b67d0398b4571", "currencySoft":0, "currencyPremium":10, "currentEnergy":120, "currentCurrencySoft":20, "currentCurrencyPremium":10}, "ts":"1416563655"}
+
+-	Покупка энергии из меню энергии (через кнопку «Добавить энергии») (id товара, стоимость, текущее количество энергии),
+{"typeId":"PURCHASE_ENERGY_FROM_BUTTON_ADD", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"itemId":"53fd8d59387b67d0398b4571", "currencySoft":0, "currencyPremium":10, "currentEnergy":120, "currentCurrencySoft":20, "currentCurrencyPremium":10}, "ts":"1416563655"}
+
+-	Покупка энергии при попытке сделать действие с недостаточным количеством энергии, через интерфейс: «У вас недостаточно энергии, купить?» (id товара, стоимость, текущее количество энергии),
+{"typeId":"PURCHASE_ENERGY_ENOUGH", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"itemId":"53fd8d59387b67d0398b4571", "currencySoft":0, "currencyPremium":10, "currentEnergy":120, "currentCurrencySoft":20, "currentCurrencyPremium":10}, "ts":"1416563655"}
+
+-	Покупка силы (через кнопку + около шкалы мощности) (id товара, стоимость, текущее количество силы),
+{"typeId":"PURCHASE_POWER_FROM_BUTTON_PLUS", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"itemId":"53fd8d59387b67d0398b4571", "currencySoft":0, "currencyPremium":10, "currentPower":120, "currentCurrencySoft":20, "currentCurrencyPremium":10}, "ts":"1416563655"}
+
+-	Покупка силы (через кнопку «Добавить силы») (id товара, стоимость, текущее количество силы),
+{"typeId":"PURCHASE_POWER_FROM_BUTTON_ADD", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"itemId":"53fd8d59387b67d0398b4571", "currencySoft":50, "currencyPremium":10, "currenctPower":120, "currentCurrencySoft":20, "currentCurrencyPremium":10}, "ts":"1416563655"}
+
+-	Покупка игровой валюты (id товара, стоимость, текущее количество игровой валюты),
+{"typeId":"PURCHASE_CURRENCY_SOFT", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"itemId":"53fd8d59387b67d0398b4571", "priceHard":50, "currentCurrencySoft":20, "currentCurrencyPremium":10}, "ts":"1416563655"}
+
+-	Покупка премиальной валюты (id товара, стоимость, текущее количество премиальной валюты),
+{"typeId":"PURCHASE_CURRENCY_PREMIUM", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"itemId":"53fd8d59387b67d0398b4571", "priceHard":50, "currentCurrencySoft":20, "currentCurrencyPremium":10}, "ts":"1416563655"}
+
+-	Успешная покупка валюты
+{"typeId":"SUCCESS_PURCHASE_CURRENCY", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"currentCurrencySoft":20, "currentCurrencyPremium":10}, "ts":"1416563655"}
+
+-	Покупка инструмента для сдачи коллекции из меню коллекции (id товара, стоимость, количество таких предметов в наличии, id коллекции через которую игрок пришел к покупке),
+{"typeId":"PURCHASE_TOOL", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"itemId":"53fd8d59387b67d0398b4571", "currentCount":1, "currencySoft":0, "currencyPremium":10, "currentCurrencySoft":20, "currentCurrencyPremium":10}, "ts":"1416563655"}
+
+-	Покупка всех инструментов для сдачи коллекции из меню коллекции (кнопкой купить все) (список id приобретаемых товаров со стоимостями, общая стоимость, id коллекции через которую игрок пришел к покупке),
+{"typeId":"PURCHASE_TOOLS", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"items":[{"id":"53fd8d59387b67d0398b4571", "count":1, "sum":100}], "total":100, "collectionId":"53fd8d59387b67d0398b4571", "currentCurrencySoft":20, "currentCurrencyPremium":10}, "ts":"1416563655"}
+
+-	Готовность коллекции к сбору (не учитывая инструменты) (id коллекции),
+{"typeId":"READY_COLLECTION", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"collectionId":"53fd8d59387b67d0398b4571"}, "ts":"1416563655"}
+
+-	Сдача коллекции (id коллекции),
+{"typeId":"MAKE_COLLECTION", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"collectionId":"53fd8d59387b67d0398b4571"}, "ts":"1416563655"}
+
+-	Покупка подсказки из локации (id, ссылка на событие «начало прохождения локации», стоимость),
+{"typeId":"PURCHASE_HINT_LEVEL", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"itemId":"53fd8d59387b67d0398b4571", "currencySoft":0, "currencyPremium":10, "currentCurrencySoft":20, "currentCurrencyPremium":10}, "ts":"1416563655"}
+
+-	Использование подсказки в локации (id, ссылка ссылка на событие «начало прохождения локации»), 
+{"typeId":"USE_HINT", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"itemId":"53fd8d59387b67d0398b4571"}, "ts":"1416563655"}
+
+-	Покупка предмета для сдачи квеста (id предмета, id квеста, открыта ли локация где можно найти предмет?, текущий режим локации где можно найти предмет?),
+{"typeId":"PURCHASE_TOOL_FROM_QUEST", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"itemId":" 53fd8d59387b67d0398b4571", "questid":" 53fd8d59387b67d0398b4571", "levelId":"53fd8d59387b67d0398b4571", "mode":"WORDS", "currentCurrencySoft":20, "currentCurrencyPremium":10}, "ts":"1416563655"}
+
+-	Использование предмета из инвентаря (id предмета), 
+{"typeId":"USE_ITEM", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"itemId":" 53fd8d59387b67d0398b4571"}, "ts":"1416563655"}
+
+-	Посещение друзей (ссылка на друга),
+{"typeId":"VISIT_FRIEND", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"friendId":" 53fd8d59387b67d0398b4571"}, "ts":"1416563655"}
+
+-	Помощь другу (id локации в которой оказана помощи и ссылка на друга),
+{"typeId":"HELP_FRIEND", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"levelId":"53fd8d59387b67d0398b4571", "friendId":" 53fd8d59387b67d0398b4571"}, "ts":"1416563655"}
+
+-	Отправка подарков (id подарка, стоимость, ссылка на друга),
+{"typeId":"SEND_GIFT", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"giftId":"53fd8d59387b67d0398b4571", "currencyPremium":20, "friendId":" 53fd8d59387b67d0398b4571"}, "ts":"1416563655"}
+
+-	Приглашение друзей (просто фиксация события),
+{"typeId":"INVITE_FRIEND", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":[], "ts":"1416563655"}
+
+-	Если средств на покупку не достаточно, перешел ли пользователь к покупке валюты (да/нет),
+{"typeId":"ENTER_BANK", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"status":true}, "ts":"1416563655"}
+
+-	Получение достижения (id достижения).
+{"typeId":"GET_ACHIEVEMENT", "appId":"stanitsa_ok_ru", "sessionId":"8a2c2f3efaa24419847a64684fd7e9f7", "data":{"achievementId":"53fd8d59387b67d0398b4571"}, "ts":"1416563655"}

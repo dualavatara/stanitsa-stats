@@ -1,0 +1,3 @@
+require './dispatcher'
+
+run Dispatcher
