@@ -1,5 +1,5 @@
 class Event
-  attr_accessor :_id, :typeId, :appId, :sessionId, :data, :ts
+  attr_accessor :sort, :limit
 
   # def initialize(collection, row)
   #   @collection = collection
@@ -22,6 +22,14 @@ class Event
     cursor = @collection.find(@selector)
     total = cursor.count()
     count = 0
+
+    if @limit
+      cursor.limit(@limit)
+    end
+
+    if @sort
+      cursor.sort(@sort)
+    end
 
     cursor.each do |row|
       count += 1
