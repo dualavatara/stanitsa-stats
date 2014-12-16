@@ -1,6 +1,7 @@
 require 'mongo'
 require 'csv'
 require_relative 'user'
+require_relative 'event'
 
 class Statistica
   include Mongo
@@ -16,12 +17,17 @@ class Statistica
     cursor = @statistic.find("typeId" => "REGISTRATION")
     i = 0
     count = cursor.count
+
     cursor.each do |row|
-      i += 1
+
       user = User.new(@statistic, row)
-      user.tutorials.each do |tutorialId, count|
-        tutcount[tutorialId] += count
-      end
+      user.getAllEvents("TUTORIAL")
+      # user.tutorials.each do |tutorialId, count|
+      #   tutcount[tutorialId] += count
+      # end
+
+      # report progress
+      i += 1
       puts "User #{i} of #{count} processed"
     end
 
@@ -32,4 +38,34 @@ class Statistica
       end
     end
   end
+
+  def testevent
+    reg = Event.new(@statistic, "typeId" => "REGISTRATION", "data.platformId" => :platformId) do |result, row, count, total|
+      result['count'] ||= 1
+      puts "Processed REGISTRATION #{count} of #{total}"
+      result
+    end
+
+    login = Event.new(@statistic, "typeId" => "LOGIN", "sessionId" => :sessionId) do |result, row, count, total|
+      result['count'] = row['count'] ? row['count'] : 0
+      puts "Processed LOGIN #{count} of #{total}"
+      result
+    end
+
+    tutorial = Event.new(@statistic, "typeId" => "TUTORIAL") do |result, row, count, total|
+      id = row['data']['tutorialId']
+      result[id] = result[id] ? result[id] + row['count'] : row['count']
+
+      puts "Processed TUTORIAL #{count} of #{total}"
+      result
+    end
+
+    tutorial.bind(login.bind(reg))
+    # reg.bind(login.bind(tutorial))
+    # reg.bind(login)
+
+    res = tutorial.query
+    puts res.inspect
+  end
+
 end
