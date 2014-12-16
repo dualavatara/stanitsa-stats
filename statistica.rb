@@ -40,15 +40,16 @@ class Statistica
   end
 
   def testevent
-    reg = Event.new(@statistic, "typeId" => "REGISTRATION", "data.platformId" => :platformId) do |result, row, count, total|
+    reg = Event.new(@statistic, "typeId" => "REGISTRATION", "appId" => 'stanitsa_ok_ru', "data.platformId" => :platformId) do |result, row, count, total|
       result['count'] ||= 1
       puts row.inspect
       puts "Processed REGISTRATION #{count} of #{total}"
       result
     end
 
-    login = Event.new(@statistic, "typeId" => "LOGIN", "sessionId" => :sessionId) do |result, row, count, total|
+    login = Event.new(@statistic, "typeId" => "LOGIN", "appId" => 'stanitsa_ok_ru', "sessionId" => :sessionId) do |result, row, count, total|
       result['count'] = row['count'] ? row['count'] : 0
+      puts row.inspect
       puts "Processed LOGIN #{count} of #{total}"
       result
     end
