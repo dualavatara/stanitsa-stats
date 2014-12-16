@@ -76,6 +76,10 @@ class Statistica
         result[l] = result[l] ?  result[l] + c : c
       end
 
+      if c == 0
+        puts row.inspect
+      end
+
       prc = (count * 100)/total
       if prc - oldprc > 1
         oldprc = prc
@@ -100,7 +104,7 @@ class Statistica
     res = level.query
 
     csv_string = CSV.generate do |csv|
-      csv << ["level", "count"]
+      csv << ["level", "users_count"]
       res.sort.each do |pair|
         csv << pair
       end
