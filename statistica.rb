@@ -72,10 +72,11 @@ class Statistica
       # if row['stop']
       #   # exit(1)
       # end
-      prc = count/total
-      # if prc - oldprc > 1
+      prc = (count * 100)/total
+      if prc - oldprc > 1
+        oldprc = prc
         puts "Processed TUTORIAL #{prc}%"
-      # end
+      end
 
       result
     end
