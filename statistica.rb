@@ -91,6 +91,11 @@ class Statistica
 
     login = Event.new(@statistic, "typeId" => "LOGIN", "appId" => 'stanitsa_ok_ru', "sessionId" => :sessionId) do |result, row, count, total|
       result['count'] = row['count'] ? row['count'] : 0
+
+      if result['count'] == 0
+        puts row.inspect
+      end
+
       result
     end
 
