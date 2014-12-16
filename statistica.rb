@@ -73,9 +73,9 @@ class Statistica
       #   # exit(1)
       # end
       prc = count/total
-      if prc - oldprc > 1
+      # if prc - oldprc > 1
         puts "Processed TUTORIAL #{prc}%"
-      end
+      # end
 
       result
     end
