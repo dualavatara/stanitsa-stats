@@ -62,6 +62,8 @@ class Statistica
       id = row['data']['tutorialId']
       result[id] = result[id] ? result[id] + row['count'] : row['count']
       puts row.inspect
+      puts id.inspect
+      puts result.inspect
       puts "Processed TUTORIAL #{count} of #{total}"
       if row['stop']
         # exit(1)
