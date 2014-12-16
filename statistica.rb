@@ -12,34 +12,6 @@ class Statistica
   end
 
   def tutorial
-    tutcount = Hash.new 0
-
-    cursor = @statistic.find("typeId" => "REGISTRATION")
-    i = 0
-    count = cursor.count
-
-    cursor.each do |row|
-
-      user = User.new(@statistic, row)
-      user.getAllEvents("TUTORIAL")
-      # user.tutorials.each do |tutorialId, count|
-      #   tutcount[tutorialId] += count
-      # end
-
-      # report progress
-      i += 1
-      puts "User #{i} of #{count} processed"
-    end
-
-    csv_string = CSV.generate do |csv|
-      csv << ["tutorialId", "count"]
-      tutcount.sort.each do |pair|
-        csv << pair
-      end
-    end
-  end
-
-  def testevent
     reg = Event.new(@statistic, "typeId" => "REGISTRATION", "appId" => 'stanitsa_ok_ru', "data.platformId" => :platformId) do |result, row, count, total|
       result['count'] ||= 1
       # puts row.inspect
@@ -93,6 +65,46 @@ class Statistica
         csv << pair
       end
     end
+  end
+
+  def levels
+    oldprc = 0
+
+    level = Event.new(@statistic, "typeId" => "GET_LEVEL", "appId" => 'stanitsa_ok_ru') do |result, row, count, total|
+      l = row['data']['expLevel']
+      c = row['count']
+      if (!l.nil? && !c.nil?)
+        result[l] = result[l] ?  result[l] + c : c
+      end
+
+      prc = (count * 100)/total
+      if prc - oldprc > 1
+        oldprc = prc
+        puts "Processed GET_LEVEL #{prc}%"
+      end
+
+      result
+    end
+
+    login = Event.new(@statistic, "typeId" => "LOGIN", "appId" => 'stanitsa_ok_ru', "sessionId" => :sessionId) do |result, row, count, total|
+      result['count'] = row['count'] ? row['count'] : 0
+      result
+    end
+
+    reg = Event.new(@statistic, "typeId" => "REGISTRATION", "appId" => 'stanitsa_ok_ru', "data.platformId" => :platformId) do |result, row, count, total|
+      result['count'] ||= 1
+      result
+    end
+
+    res = level.query
+
+    csv_string = CSV.generate do |csv|
+      csv << ["level", "count"]
+      res.sort.each do |pair|
+        csv << pair
+      end
+    end
+
   end
 
 end
