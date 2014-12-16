@@ -53,7 +53,7 @@ class Statistica
       puts row.inspect
       puts "Processed LOGIN #{count} of #{total}"
       if total > 1
-        exit(1)
+        result['stop'] = 1
       end
       result
     end
@@ -63,6 +63,9 @@ class Statistica
       result[id] = result[id] ? result[id] + row['count'] : row['count']
       puts row.inspect
       puts "Processed TUTORIAL #{count} of #{total}"
+      if row['stop']
+        exit(1)
+      end
       result
     end
 
