@@ -61,15 +61,11 @@ class Statistica
     tutorial = Event.new(@statistic, "typeId" => "TUTORIAL", "appId" => 'stanitsa_ok_ru') do |result, row, count, total|
       id = row['data']['tutorialId']
       c = row['count']
-      # result[id] = result[id] ? result[id] + row['count'] : row['count']
+      if (!id.nil? && !c.nil?)
+        result[id] = result[id] ? result[id] + c : c
+      end
 
       puts row.inspect
-      puts id.inspect
-      puts result.inspect
-
-      result[id] = result[id] ? result[id] + c : c
-
-      puts result[id].to_s + " + " + c.to_s
       puts "Processed TUTORIAL #{count} of #{total}"
       if row['stop']
         # exit(1)
