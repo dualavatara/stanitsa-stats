@@ -53,7 +53,7 @@ class Statistica
       result
     end
 
-    tutorial = Event.new(@statistic, "typeId" => "TUTORIAL") do |result, row, count, total|
+    tutorial = Event.new(@statistic, "typeId" => "TUTORIAL", "appId" => 'stanitsa_ok_ru') do |result, row, count, total|
       id = row['data']['tutorialId']
       result[id] = result[id] ? result[id] + row['count'] : row['count']
 
