@@ -42,21 +42,23 @@ class Statistica
   def testevent
     reg = Event.new(@statistic, "typeId" => "REGISTRATION", "appId" => 'stanitsa_ok_ru', "data.platformId" => :platformId) do |result, row, count, total|
       result['count'] ||= 1
-      puts row.inspect
-      puts "Processed REGISTRATION #{count} of #{total}"
+      # puts row.inspect
+      # puts "Processed REGISTRATION #{count} of #{total}"
       result
     end
 
     login = Event.new(@statistic, "typeId" => "LOGIN", "appId" => 'stanitsa_ok_ru', "sessionId" => :sessionId) do |result, row, count, total|
       result['count'] = row['count'] ? row['count'] : 0
 
-      puts row.inspect
-      puts "Processed LOGIN #{count} of #{total}"
-      if total > 1
-        result['stop'] = 1
-      end
+      # puts row.inspect
+      # puts "Processed LOGIN #{count} of #{total}"
+      # if total > 1
+      #   result['stop'] = 1
+      # end
       result
     end
+
+    oldprc = 0
 
     tutorial = Event.new(@statistic, "typeId" => "TUTORIAL", "appId" => 'stanitsa_ok_ru') do |result, row, count, total|
       id = row['data']['tutorialId']
@@ -65,11 +67,16 @@ class Statistica
         result[id] = result[id] ? result[id] + c : c
       end
 
-      puts row.inspect
-      puts "Processed TUTORIAL #{count} of #{total}"
-      if row['stop']
-        # exit(1)
+      # puts row.inspect
+      # puts "Processed TUTORIAL #{count} of #{total}"
+      # if row['stop']
+      #   # exit(1)
+      # end
+      prc = count/total
+      if prc - oldprc > 1
+        puts "Processed TUTORIAL #{prc}%"
       end
+
       result
     end
 
@@ -78,7 +85,13 @@ class Statistica
     # reg.bind(login)
 
     res = tutorial.query
-    puts res.inspect
+
+    csv_string = CSV.generate do |csv|
+      csv << ["tutorialId", "count"]
+      res.sort.each do |pair|
+        csv << pair
+      end
+    end
   end
 
 end
