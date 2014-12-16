@@ -75,10 +75,11 @@ class Statistica
       a = row['age']
       if (!l.nil? && !c.nil?)
         unless result[l]
-          result.store(l, {'count_users' => 0, 'avg_away_time' => 0})
+          result.store(l, {'count_events' => 0, 'avg_away_time' => 0, 'last_user' => ''})
         end
-        result[l]['count_users'] = result[l]['count_users'] ?  result[l]['count_users'] + c : c
+        result[l]['count_events'] = result[l]['count_events'] ?  result[l]['count_events'] + c : c
         result[l]['avg_away_time'] = result[l]['avg_away_time'] ?  (result[l]['avg_away_time'] + a)/2 : a
+        result[l]['last_user'] = row['last_user']
       end
 
       if c == 0
@@ -97,6 +98,7 @@ class Statistica
     login = Event.new(@statistic, "typeId" => "LOGIN", "appId" => 'stanitsa_ok_ru', "sessionId" => :sessionId) do |result, row, count, total|
       result['count'] ||= 1
       result['age'] ||= row['age']
+      result['last_user'] ||= row['data']['platformId']
       result
     end
 
@@ -113,9 +115,9 @@ class Statistica
     res = level.query
 
     csv_string = CSV.generate do |csv|
-      csv << ["level", "count_users", "avg_away_time"]
+      csv << ["level", "count_events", "avg_away_time"]
       res.sort.each do |pair|
-        csv << [pair[0], pair[1]['count_users'], pair[1]['avg_away_time']]
+        csv << [pair[0], pair[1]['count_events'], pair[1]['avg_away_time']]
       end
     end
 
