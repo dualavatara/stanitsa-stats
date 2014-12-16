@@ -1,6 +1,5 @@
 require 'mongo'
 require 'csv'
-require_relative 'user'
 require_relative 'event'
 
 class Statistica
