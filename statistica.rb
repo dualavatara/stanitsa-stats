@@ -115,9 +115,9 @@ class Statistica
     res = level.query
 
     csv_string = CSV.generate do |csv|
-      csv << ["level", "count_events", "avg_away_time"]
+      csv << ["level", "count_events", "avg_away_time", 'last_user']
       res.sort.each do |pair|
-        csv << [pair[0], pair[1]['count_events'], pair[1]['avg_away_time']]
+        csv << [pair[0], pair[1]['count_events'], pair[1]['avg_away_time'], pair[1]['last_user']]
       end
     end
 
