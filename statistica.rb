@@ -108,7 +108,6 @@ class Statistica
     last.limit = 1
     last.sort = {:ts => :desc}
 
-    level.limit=10
     level.bind(login.bind(last))
 
     res = level.query
