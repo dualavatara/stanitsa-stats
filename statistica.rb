@@ -95,6 +95,8 @@ class Statistica
       result
     end
 
+    level.bind(login.bind(reg))
+
     res = level.query
 
     csv_string = CSV.generate do |csv|
