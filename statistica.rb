@@ -42,6 +42,7 @@ class Statistica
   def testevent
     reg = Event.new(@statistic, "typeId" => "REGISTRATION", "data.platformId" => :platformId) do |result, row, count, total|
       result['count'] ||= 1
+      puts row.inspect
       puts "Processed REGISTRATION #{count} of #{total}"
       result
     end
