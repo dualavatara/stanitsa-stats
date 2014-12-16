@@ -64,7 +64,7 @@ class Statistica
       puts row.inspect
       puts id.inspect
       puts result.inspect
-      puts result[id] + " + " + row['count']
+      puts result[id].to_s + " + " + row['count'].to_s
       puts "Processed TUTORIAL #{count} of #{total}"
       if row['stop']
         # exit(1)
