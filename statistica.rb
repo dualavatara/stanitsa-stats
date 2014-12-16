@@ -52,7 +52,7 @@ class Statistica
 
       puts row.inspect
       puts "Processed LOGIN #{count} of #{total}"
-      if not row['count']
+      if total > 1
         exit(1)
       end
       result
