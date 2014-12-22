@@ -123,4 +123,62 @@ class Statistica
 
   end
 
+  def test
+    l3 = @statistic.find("typeId" => "GET_LEVEL", "appId" => 'stanitsa_ok_ru', 'data.expLevel' => 3).count()
+    l4 = @statistic.find("typeId" => "GET_LEVEL", "appId" => 'stanitsa_ok_ru', 'data.expLevel' => 4).count()
+    l5 = @statistic.find("typeId" => "GET_LEVEL", "appId" => 'stanitsa_ok_ru', 'data.expLevel' => 5).count()
+    puts l3
+    puts l4
+    puts l5
+  end
+
+  def quest
+    oldprc = 0
+    questsStart = Event.new(@statistic, "appId" => 'stanitsa_ok_ru', "typeId" => "GET_QUEST") do |result, row, count, total|
+      result[row['data']['questId']] ||= 0
+      result[row['data']['questId']] += 1
+
+      prc = (count * 100)/total
+      if prc - oldprc > 1
+        oldprc = prc
+        puts "Processed GET_QUEST #{prc}%"
+      end
+
+      result
+    end
+
+    oldprc = 0
+
+    questsEnd = Event.new(@statistic, "appId" => 'stanitsa_ok_ru', "typeId" => "END_QUEST") do |result, row, count, total|
+      result[row['data']['questId']] ||= 0
+      result[row['data']['questId']] += 1
+
+      prc = (count * 100)/total
+      if prc - oldprc > 1
+        oldprc = prc
+        puts "Processed END_QUEST #{prc}%"
+      end
+
+      result
+    end
+
+    questsEnd.limit = 10
+    questsStart.limit = 10
+
+    resStart = questsStart.query
+    resEnd = questsEnd.query
+
+    res = Hash.new
+    resStart.each do |questId, numStarted|
+      numEnded = resEnd[questId] ? resEnd[questId] : 0
+      res[questId] = [numStarted, numEnded]
+    end
+
+    csv_string = CSV.generate do |csv|
+      csv << ["questId", "num_started", "num_ended"]
+      res.sort.each do |pair|
+        csv << [pair[0], pair[1][0], pair[1][1]]
+      end
+    end
+  end
 end

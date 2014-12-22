@@ -20,12 +20,14 @@ class Event
   def query
     result = Hash.new
     cursor = @collection.find(@selector)
-    total = cursor.count()
+
     count = 0
 
     if @limit
       cursor.limit(@limit)
     end
+
+    total = cursor.count()
 
     if @sort
       cursor.sort(@sort)
