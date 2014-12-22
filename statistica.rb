@@ -162,8 +162,8 @@ class Statistica
       result
     end
 
-    questsEnd.limit = 10
-    questsStart.limit = 10
+    # questsEnd.limit = 10
+    # questsStart.limit = 10
 
     resStart = questsStart.query
     resEnd = questsEnd.query
