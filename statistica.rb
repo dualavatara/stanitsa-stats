@@ -147,7 +147,7 @@ class Statistica
       result
     end
 
-    oldprc = 0
+
 
     questsEnd = Event.new(@statistic, "appId" => 'stanitsa_ok_ru', "typeId" => "END_QUEST") do |result, row, count, total|
       result[row['data']['questId']] ||= 0
@@ -166,6 +166,7 @@ class Statistica
     # questsStart.limit = 10
 
     resStart = questsStart.query
+    oldprc = 0
     resEnd = questsEnd.query
 
     res = Hash.new
