@@ -182,4 +182,9 @@ class Statistica
       end
     end
   end
+
+  def sessions
+    sess = @statistic.find("typeId" => "LOGIN", "appId" => 'stanitsa_vk_ru', 'ts' => {"$gt" => Time.now.to_i - 3600 * 24}).count()
+    puts sess
+  end
 end
