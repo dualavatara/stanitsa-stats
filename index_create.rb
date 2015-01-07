@@ -1,4 +1,5 @@
 require 'mongo'
+require 'pp'
 
 include Mongo
 
@@ -12,5 +13,5 @@ puts dayago
 # sess = @statistic.count({'ts' => {"$gt" => dayago.to_i}})
 # puts sess
 # puts @statistic.count("typeId" => "LOGIN", "appId" => 'stanitsa_vk_ru')
-stat.create_index({'appId' => Mongo::ASCENDING, 'typeId' => Mongo::ASCENDING},{:background => true})
-puts stat.index_information
+# stat.create_index({'appId' => Mongo::ASCENDING, 'typeId' => Mongo::ASCENDING},{:background => true})
+pp(stat.index_information)
