@@ -1,5 +1,7 @@
 require 'mongo'
 
+include Mongo
+
 stat = MongoClient.new("localhost", 27017).db("statistic").collection("statistic")
 
 #    sess = @statistic.find({"typeId" => "LOGIN", "appId" => 'stanitsa_ok_ru', 'ts' => {"$gt" => Time.now.to_i - 3600 * 24}}).count()
