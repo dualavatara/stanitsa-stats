@@ -192,8 +192,8 @@ class Statistica
     sess = @statistic.aggregate([
                                     {"$match" => {"typeId" => "LOGIN"}},
                                     {"$limit" => 10},
-                                    {"$project" => {"browser" => "$data.browser", "resolution" => "$data.resolution", "count" => 1}}
-                                    # {"$group" => {:_id => {}, :count => {}}}
+                                    {"$project" => {:browser => "$data.browser", :resolution => "$data.resolution"}},
+                                    {"$group" => {:_id => {:browser => "$browser", :resolution => "$resolution"}, :count => {"$sum" => 1}}}
                                 ])
     puts sess
   end
