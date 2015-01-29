@@ -1,5 +1,7 @@
 require 'mongo'
 require 'csv'
+require 'net/http'
+require 'json'
 require_relative 'event'
 
 class Statistica
@@ -189,18 +191,32 @@ class Statistica
   end
 
   def browsers
-    res = @statistic.aggregate([
+    browsers = @statistic.aggregate([
                                     {"$match" => {"typeId" => "LOGIN", "data.browser" => {"$exists" => true}, "data.browser" => {"$ne" => nil} }},
-                                    # {"$limit" => 10},
+                                    {"$limit" => 10},
                                     {"$project" => {:browser => "$data.browser", :resolution => "$data.resolution"}},
                                     {"$group" => {:_id => {:browser => "$browser", :resolution => "$resolution"}, :count => {"$sum" => 1}}},
                                     {"$project" => {:_id => 0, :browser => "$_id.browser", :resolution => "$_id.resolution", :count => "$count"}}
                                 ])
     # puts res
+
+    res = Array
+
+    browsers.each do |row|
+      uaurl = URI("http://www.useragentstring.com/?uas=#{row["browser"]}&getJSON=all")
+      json = Net::HTTP.get uaurl
+      browser = JSON.parse json
+      merged = row.merge browser
+
+      res.push merged
+
+    end
+
     csv_string = CSV.generate do |csv|
-      csv << ["browser", "resolution", "count"]
+      csv << ["useragent", "OS", "browser" "resolution", "count"]
       res.each do |row|
-        csv << [row["browser"], row["resolution"], row["count"]]
+        uaurl = "http://www.useragentstring.com/?uas=#{}&getJSON=all"
+        csv << [row["browser"], row["os_name"], row["agent_name"] + row["agent_version"], row["resolution"], row["count"]]
       end
     end
   end
