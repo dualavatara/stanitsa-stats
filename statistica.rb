@@ -208,7 +208,8 @@ class Statistica
       browser = JSON.parse json
       merged = row.merge browser
 
-      res.push merged
+      puts merged
+      # res.push merged
 
     end
 
