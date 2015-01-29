@@ -187,4 +187,9 @@ class Statistica
     sess = @statistic.find("typeId" => "LOGIN", "appId" => 'stanitsa_ok_ru', 'ts' => {"$gt" => Time.now.to_i - 3600 * 24}).count()
     puts sess
   end
+
+  def browsers
+    sess = @statistic.aggregate([{"$match" => {"typeId" => "LOGIN"}}])
+    puts sess
+  end
 end
