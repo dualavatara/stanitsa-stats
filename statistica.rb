@@ -199,7 +199,7 @@ class Statistica
     csv_string = CSV.generate do |csv|
       csv << ["browser", "resolution", "count"]
       res.each do |row|
-        csv << row
+        csv << [row["browser"], row["resolution"], row["count"]]
       end
     end
   end
