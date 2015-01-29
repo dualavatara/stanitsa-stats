@@ -189,9 +189,12 @@ class Statistica
   end
 
   def browsers
-    sess = @statistic.aggregate([{"$match" => {"typeId" => "LOGIN"}}], :cursor => {})
-    sess.each do |row|
-      puts row
-    end
+    sess = @statistic.aggregate([
+                                    {"$match" => {"typeId" => "LOGIN"}},
+                                    {"$limit" => 10},
+                                    {"$project" => {"browser" => "$data.browser", "resolution" => "$data.resolution", "count" => 1}}
+                                    # {"$group" => {:_id => {}, :count => {}}}
+                                ])
+    puts sess
   end
 end
