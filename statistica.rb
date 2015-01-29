@@ -200,7 +200,7 @@ class Statistica
                                 ])
     # puts res
 
-    res = Array
+    res = Array.new
 
     browsers.each do |row|
       uaurl = URI("http://www.useragentstring.com/?uas=#{URI.escape(row["browser"])}&getJSON=all")
@@ -209,7 +209,7 @@ class Statistica
       merged = row.merge browser
 
       puts merged
-      # res.push merged
+      res.push merged
 
     end
 
