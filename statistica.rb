@@ -193,7 +193,7 @@ class Statistica
   def browsers
     browsers = @statistic.aggregate([
                                     {"$match" => {"typeId" => "LOGIN", "data.browser" => {"$exists" => true}, "data.browser" => {"$ne" => nil} }},
-                                    {"$limit" => 10},
+                                    # {"$limit" => 10},
                                     {"$project" => {:browser => "$data.browser", :resolution => "$data.resolution"}},
                                     {"$group" => {:_id => {:browser => "$browser", :resolution => "$resolution"}, :count => {"$sum" => 1}}},
                                     {"$project" => {:_id => 0, :browser => "$_id.browser", :resolution => "$_id.resolution", :count => "$count"}}
@@ -214,10 +214,10 @@ class Statistica
     end
 
     csv_string = CSV.generate do |csv|
-      csv << ["useragent", "OS", "browser" "resolution", "count"]
+      csv << ["useragent", "OS", "browser", "resolution", "count"]
       res.each do |row|
         uaurl = "http://www.useragentstring.com/?uas=#{}&getJSON=all"
-        csv << [row["browser"], row["os_name"], row["agent_name"] + row["agent_version"], row["resolution"], row["count"]]
+        csv << [row["browser"], row["os_name"], row["agent_name"] + ' ' + row["agent_version"], row["resolution"], row["count"]]
       end
     end
   end
