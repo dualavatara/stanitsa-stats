@@ -203,7 +203,7 @@ class Statistica
     res = Array
 
     browsers.each do |row|
-      uaurl = URI("http://www.useragentstring.com/?uas=#{row["browser"]}&getJSON=all")
+      uaurl = URI("http://www.useragentstring.com/?uas=#{URI.escape(row["browser"])}&getJSON=all")
       json = Net::HTTP.get uaurl
       browser = JSON.parse json
       merged = row.merge browser
