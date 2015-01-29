@@ -190,7 +190,7 @@ class Statistica
 
   def browsers
     sess = @statistic.aggregate([
-                                    {"$match" => {"typeId" => "LOGIN", "data.browser" => {"$exists" => true} }},
+                                    {"$match" => {"typeId" => "LOGIN", "data.browser" => {"$exists" => true}, "data.browser" => {"$ne" => nil} }},
                                     {"$limit" => 10},
                                     {"$project" => {:browser => "$data.browser", :resolution => "$data.resolution"}},
                                     {"$group" => {:_id => {:browser => "$browser", :resolution => "$resolution"}, :count => {"$sum" => 1}}}
