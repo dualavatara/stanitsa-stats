@@ -216,7 +216,6 @@ class Statistica
     csv_string = CSV.generate do |csv|
       csv << ["useragent", "OS", "browser", "resolution", "count"]
       res.each do |row|
-        uaurl = "http://www.useragentstring.com/?uas=#{}&getJSON=all"
         csv << [row["browser"], row["os_name"], row["agent_name"] + ' ' + row["agent_version"], row["resolution"], row["count"]]
       end
     end
