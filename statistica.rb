@@ -189,7 +189,9 @@ class Statistica
   end
 
   def browsers
-    sess = @statistic.aggregate([{"$match" => {"typeId" => "LOGIN"}}])
-    puts sess
+    sess = @statistic.aggregate([{"$match" => {"typeId" => "LOGIN"}}], :cursor => {})
+    sess.each do |row|
+      puts row
+    end
   end
 end
