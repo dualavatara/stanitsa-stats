@@ -194,9 +194,9 @@ class Statistica
                                     {"$limit" => 10},
                                     {"$project" => {:browser => "$data.browser", :resolution => "$data.resolution"}},
                                     {"$group" => {:_id => {:browser => "$browser", :resolution => "$resolution"}, :count => {"$sum" => 1}}},
-                                    {"$project" => {:_id => 0, :browser => "$_id.browser", :resolution => "$_id.resolution", :count => "$_id.count"}}
+                                    {"$project" => {:_id => 0, :browser => "$_id.browser", :resolution => "$_id.resolution", :count => "$count"}}
                                 ])
-    puts res
+    # puts res
     csv_string = CSV.generate do |csv|
       csv << ["browser", "resolution", "count"]
       res.each do |row|
