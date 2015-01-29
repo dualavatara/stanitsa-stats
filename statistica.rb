@@ -189,12 +189,18 @@ class Statistica
   end
 
   def browsers
-    sess = @statistic.aggregate([
+    res = @statistic.aggregate([
                                     {"$match" => {"typeId" => "LOGIN", "data.browser" => {"$exists" => true}, "data.browser" => {"$ne" => nil} }},
                                     {"$limit" => 10},
                                     {"$project" => {:browser => "$data.browser", :resolution => "$data.resolution"}},
-                                    {"$group" => {:_id => {:browser => "$browser", :resolution => "$resolution"}, :count => {"$sum" => 1}}}
+                                    {"$group" => {:_id => {:browser => "$browser", :resolution => "$resolution"}, :count => {"$sum" => 1}}},
+                                    {"$project" => {$_id => 0, :browser => "$_id.browser", :resolution => "$_id.resolution", :count => "$_id.count"}}
                                 ])
-    puts sess
+    csv_string = CSV.generate do |csv|
+      csv << ["browser", "resolution", "count"]
+      res.each do |row|
+        csv << row
+      end
+    end
   end
 end
